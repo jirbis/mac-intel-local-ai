@@ -74,14 +74,20 @@ All the GPU options are llama.cpp's Vulkan backend underneath, so they end up eq
 
 ## Uninstall
 
-1. In the app, stop the server and turn off "start at login". Then:
+1. If you installed the Codex router from an earlier version, remove it first, while its copy is still in Application Support. This puts the Codex / ChatGPT app's settings back; without it the app keeps pointing at `127.0.0.1:11500` and none of its models work once the router is gone. Then restart that app.
+
+   ```sh
+   /usr/bin/python3 ~/Library/"Application Support/Mac Intel Local AI"/codex_router.py uninstall
+   ```
+
+2. In the app, stop the server and turn off "start at login". Then:
 
    ```sh
    rm -rf ~/Applications/"Mac Intel Local AI.app" ~/Library/"Application Support/Mac Intel Local AI" ~/Library/Logs/"Mac Intel Local AI"
    rm -f ~/Library/LaunchAgents/com.github.jirbis.mac-intel-local-ai.*.plist
    ```
 
-2. The backends (Ollama, llama.cpp) and your models in `~/.ollama` are untouched. Remove them separately if you want.
+3. The backends (Ollama, llama.cpp) and your models in `~/.ollama` are untouched. Remove them separately if you want.
 
 ## License
 
