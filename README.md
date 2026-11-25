@@ -28,8 +28,7 @@ Developed and measured on a MacBook Pro 16" 2019 (i9-9880H, Radeon Pro 5500M 8 G
 - **Video memory.** Free and total VRAM of the Radeon, how much the loaded model holds and how much macOS and the displays take (each external display uses some), so you can see what size of model still fits fully on the GPU. `MacIntelLocalAI --vram` prints it in the terminal.
 - **Speed test.** Generated and prompt tokens per second.
 - **Other tools can find the server.** The app writes `~/Library/Application Support/Mac Intel Local AI/active.json`; see [`examples/active_server.py`](examples/active_server.py).
-- **Chat apps.** The window shows the OpenAI-compatible Base URL (`http://127.0.0.1:<port>/v1`), the model name and an API key (any value works) with copy buttons, for Jan, Open WebUI, Msty and similar apps. With a llama.cpp backend it also opens llama-server's built-in chat page. The ChatGPT app can't use a local server.
-- **Codex / ChatGPT app** (separate tool). [`tools/codex-router`](tools/codex-router) adds the local model, and optionally models from an OpenAI-compatible gateway on your network, to the Codex app's model list next to the Ollama Cloud and GPT models: [docs/codex.md](docs/codex.md).
+- **Chat apps.** The window shows the OpenAI-compatible Base URL (`http://127.0.0.1:<port>/v1`), the model name and an API key (any value works) with copy buttons, for Jan, Open WebUI, Msty and similar apps. With a llama.cpp backend it also opens llama-server's built-in chat page.
 - **[Hex](https://github.com/jirbis/hex) integration.** Optional: it sets `HEX_LOCAL_AI_ENDPOINT` and `HEX_LOCAL_AI_MODEL` now and at every login.
 
 ## Install
