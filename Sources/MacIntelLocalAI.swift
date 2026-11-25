@@ -1295,13 +1295,11 @@ struct SettingsView: View {
             Text(tr("""
                 Any app that lets you add an OpenAI-compatible provider can use this server: \
                 Jan (Settings → Model Providers → add a provider with this Base URL and any API key), \
-                Open WebUI, Msty, Raycast and similar. The API key isn't checked. \
-                The ChatGPT app can't: it only talks to OpenAI's cloud.
+                Open WebUI, Msty, Raycast and similar. The API key isn't checked.
                 """, """
                 Этот сервер может использовать любая программа, где можно добавить провайдера с OpenAI API: \
                 Jan (Settings → Model Providers → новый провайдер с этим Base URL и любым API key), \
-                Open WebUI, Msty, Raycast и похожие. API key не проверяется. \
-                Приложение ChatGPT не может: оно работает только с облаком OpenAI.
+                Open WebUI, Msty, Raycast и похожие. API key не проверяется.
                 """))
                 .font(.caption).foregroundStyle(.secondary)
             HStack {
