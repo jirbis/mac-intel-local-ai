@@ -3,6 +3,13 @@
 #   ./build.sh           build into ./build
 #   ./build.sh install   also copy to ~/Applications and open it
 set -e
+APP_VERSION="${APP_VERSION:-1.0}"
+APP_BUILD_NUMBER="${APP_BUILD_NUMBER:-1}"
+version_pattern='^[0-9]+\.[0-9]+(\.[0-9]+)?$'
+build_pattern='^[0-9]+$'
+if ! [[ "$APP_VERSION" =~ $version_pattern && "$APP_BUILD_NUMBER" =~ $build_pattern ]]; then
+  echo "Invalid app version or build number" >&2; exit 1
+fi
 D="$(cd "$(dirname $0)" && pwd)"
 APP="$D/build/Mac Intel Local AI.app"
 rm -rf "$APP"; mkdir -p "$APP/Contents/MacOS"
@@ -30,8 +37,8 @@ cat > "$APP/Contents/Info.plist" <<PLIST
   <key>CFBundleName</key><string>Mac Intel Local AI</string>
   <key>CFBundleExecutable</key><string>MacIntelLocalAI</string>
   <key>CFBundlePackageType</key><string>APPL</string>
-  <key>CFBundleShortVersionString</key><string>1.0</string>
-  <key>CFBundleVersion</key><string>1</string>
+  <key>CFBundleShortVersionString</key><string>$APP_VERSION</string>
+  <key>CFBundleVersion</key><string>$APP_BUILD_NUMBER</string>
   <key>LSMinimumSystemVersion</key><string>13.0</string>
   <key>LSUIElement</key><true/>
 </dict></plist>

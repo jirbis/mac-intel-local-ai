@@ -43,6 +43,29 @@ cd mac-intel-local-ai
 
 The app is signed ad hoc on your machine. Then install at least one backend: see [docs/backends.md](docs/backends.md).
 
+## CI/CD and releases
+
+GitHub Actions builds the Intel (x86_64) app on macOS 15 using the same `build.sh` as local installations. Heavy jobs run only after a pull request is merged into `main`, not on individual feature-branch commits or unmerged PRs. Direct pushes do not trigger a build.
+
+- **Automatic dev builds:** after a merge, the workflow checks the merged revision, compiles, checks the architecture, validates the bundle and its ad-hoc signature, and publishes a ZIP and SHA-256 checksum as a GitHub pre-release (`dev-<run-id>`).
+- **Manual check:** Actions → Intel macOS CI/CD → Run workflow on `main` → `check`. Builds and uploads an artifact without publishing.
+- **Stable release:** use the same manual workflow on `main`, select `stable` and enter a new version (`X.Y.Z`). The resulting release uses tag `vX.Y.Z`. Existing tags are not overwritten.
+
+Build and publication are separate jobs: only publication has repository write permission. The ZIP is verified before publication. Build artifacts are retained for seven days; releases remain available under [Releases](https://github.com/jirbis/mac-intel-local-ai/releases).
+
+### Opening a downloaded release
+
+The app is ad-hoc signed, not Apple Developer ID signed or notarized, so macOS blocks the first launch of a downloaded copy ("Apple could not verify ..."). On macOS 15 Control-click → Open no longer bypasses this. To open it:
+
+1. Optionally check the download: run `shasum -a 256 -c SHA256SUMS` in the folder with both files.
+2. Unzip `MacIntelLocalAI-macos-x86_64.zip` and move `Mac Intel Local AI.app` to `~/Applications`.
+3. Open the app once. When macOS refuses, click **Done**.
+4. Open **System Settings → Privacy & Security**, scroll to **Security** and click **Open Anyway** next to "Mac Intel Local AI" (it is listed for about an hour after the attempt). Confirm with your password.
+
+macOS remembers the choice for this copy, so later launches open normally. A newly downloaded release needs the same steps once. If you'd rather not do this, build the app yourself with `./build.sh install`: a locally built app isn't quarantined.
+
+The hosted runner verifies the bundle but cannot validate Vulkan/Radeon performance; test the downloaded app on the target Intel Mac. Local backends and models are not bundled.
+
 ## Files it uses
 
 | Path | What |
