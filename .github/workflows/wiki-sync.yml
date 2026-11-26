@@ -1,0 +1,83 @@
+name: Sync documentation to Wiki
+
+# Only reviewed, merged main content is published. Never check out a PR head
+# under pull_request_target. Manual check is available after this lands on main.
+on:
+  pull_request_target:
+    types: [closed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Render and validate only, or publish to the repository Wiki
+        type: choice
+        options: [check, publish]
+        default: check
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-to-wiki
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: ${{ (github.event_name == 'pull_request_target' && github.event.pull_request.merged == true) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out current trusted main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7, same pin as release CI
+        with:
+          ref: refs/heads/main
+          persist-credentials: false
+      - name: Test and render all approved documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s scripts -p 'test_render_wiki.py'
+          python3 scripts/render_wiki.py --output "$RUNNER_TEMP/wiki-pages"
+      - name: Publish to existing Wiki
+        if: ${{ github.event_name == 'pull_request_target' || inputs.mode == 'publish' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Never put credentials into the clone URL or persistent Git config.
+          auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          echo "::add-mask::$auth"
+          export GIT_CONFIG_COUNT=1
+          export GIT_CONFIG_KEY_0=http.https://github.com/.extraheader
+          export GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $auth"
+          export GIT_TERMINAL_PROMPT=0
+          unset GH_TOKEN auth
+          wiki="$RUNNER_TEMP/wiki-repo"
+          git clone -- "https://github.com/${GITHUB_REPOSITORY}.wiki.git" "$wiki" || {
+            echo "::error::Initialize the Wiki with a first page and check Wiki write permissions."
+            exit 1
+          }
+          git -C "$wiki" config user.name 'github-actions[bot]'
+          git -C "$wiki" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          # Only replace explicitly mapped pages. Preserve other pages, sidebar,
+          # assets and history. No force push and no automatic deletion.
+          for page in "$RUNNER_TEMP/wiki-pages/"*.md; do
+            name="$(basename "$page")"
+            target="$wiki/$name"
+            if [[ -L "$target" || ( -e "$target" && ! -f "$target" ) ]]; then
+              echo "::error::Unexpected Wiki destination type: $name"
+              exit 1
+            fi
+            cp -- "$page" "$target"
+            git -C "$wiki" add -- "$name"
+          done
+          if git -C "$wiki" diff --cached --quiet; then
+            echo "Wiki is already up to date."
+            exit 0
+          fi
+          revision="$(git rev-parse --short HEAD)"
+          git -C "$wiki" commit -m "Sync documentation from main ($revision)"
+          git -C "$wiki" push origin HEAD
