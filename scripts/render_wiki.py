@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Render reviewed public docs into the flat GitHub Wiki page namespace."""
 import argparse
+import os
 import posixpath
 import re
 from pathlib import Path
 from urllib.parse import quote, unquote, urlsplit
 
-REPO = "https://github.com/jirbis/mac-intel-local-ai"
+# The repository being published (a fork publishes its own links).
+SLUG = os.environ.get("GITHUB_REPOSITORY") or "jirbis/mac-intel-local-ai"
+REPO = f"https://github.com/{SLUG}"
 BLOB = REPO + "/blob/main/"
-RAW = "https://raw.githubusercontent.com/jirbis/mac-intel-local-ai/main/"
+RAW = f"https://raw.githubusercontent.com/{SLUG}/main/"
 PAGES = {
     "docs/wiki/Home.md": "Home",
     "docs/wiki/Getting-Started.md": "Getting-Started",

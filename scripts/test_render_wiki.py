@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from render_wiki import PAGES, render, render_page
+from render_wiki import BLOB, PAGES, render, render_page
 
 
 class WikiRenderTests(unittest.TestCase):
@@ -27,14 +27,14 @@ class WikiRenderTests(unittest.TestCase):
     def test_links_and_fences(self):
         source = "docs/wiki/Home.md"
         text = ("[Getting started](Getting-Started) [Backend](../backends.md#setup)\n"
-                "[Benchmark](https://github.com/jirbis/mac-intel-local-ai/blob/main/docs/benchmarks.md)\n"
+                f"[Benchmark]({BLOB}docs/benchmarks.md)\n"
                 "[Code](../../example.py) [External](https://example.com)\n"
                 "```md\n[x](nonexistent.md)\n```\n")
         result = render_page(text, source, self.root)
         self.assertIn("[Getting started](Getting-Started)", result)
         self.assertIn("[Backend](Backends#setup)", result)
         self.assertIn("[Benchmark](Benchmarks)", result)
-        self.assertIn("[Code](https://github.com/jirbis/mac-intel-local-ai/blob/main/example.py)", result)
+        self.assertIn(f"[Code]({BLOB}example.py)", result)
         self.assertIn("[External](https://example.com)", result)
         self.assertIn("[x](nonexistent.md)", result)
 

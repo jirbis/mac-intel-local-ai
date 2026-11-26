@@ -1,11 +1,14 @@
 name: Sync documentation to Wiki
 
 # Only reviewed, merged main content is published. Never check out a PR head
-# under pull_request_target. Manual check is available after this lands on main.
+# under pull_request_target. Merged PRs publish automatically only when they
+# change docs/ and the repository variable WIKI_SYNC is "true", which the owner
+# sets after the first manual publication (see scripts/WIKI-SYNC.md).
 on:
   pull_request_target:
     types: [closed]
     branches: [main]
+    paths: ["docs/**"]
   workflow_dispatch:
     inputs:
       mode:
@@ -23,7 +26,7 @@ concurrency:
 
 jobs:
   sync:
-    if: ${{ (github.event_name == 'pull_request_target' && github.event.pull_request.merged == true) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') }}
+    if: ${{ (github.event_name == 'pull_request_target' && github.event.pull_request.merged == true && vars.WIKI_SYNC == 'true') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
