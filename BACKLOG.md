@@ -6,3 +6,10 @@
 - [x] MIT declared in repository; distinguish third-party backend/model rights, versions and provenance.
 - [ ] Verify the exact downloaded artifact on physical Intel Radeon Mac: checksum, signature, launch, CPU/Vulkan inference, actual residency, switching and local endpoint. Record raw timings and OS/version, no unsupported claims.
 - [ ] Owner review of docs; stable release only through approved existing workflow. No merge without owner decision.
+
+## Public readiness — 2026-11-26
+- [x] Review current repository, CI and release metadata; prepare [Wiki-ready documentation](docs/wiki/Home.md) and [readiness findings](docs/public-readiness.md).
+- [ ] P0: safe Hex login-agent arguments, explicit restart/disconnect/restore, truthful error handling; loopback and config privacy protections.
+- [ ] P0: full history/release secret scan and exact downloadable artifact/physical Hex acceptance.
+- [ ] P1: real redacted screenshots, native Wiki publication, safe backend install instructions, SECURITY.md and issue templates, regression tests.
+- [ ] Owner review before merge or stable publication. Upstream comment attempt to Hex #953 returned 403; manual posting required.
