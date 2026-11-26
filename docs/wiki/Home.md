@@ -5,9 +5,9 @@ A standalone macOS menu bar application for running and comparing local LLM serv
 **Status:** experimental development pre-release; see [Releases](https://github.com/jirbis/mac-intel-local-ai/releases). The downloadable build is ad-hoc signed, not notarized. No official Hex affiliation or broad hardware compatibility claim.
 
 ## Start here
-- [Getting Started](Getting-Started) — installation, backends and first generation.
-- [Hex Integration](Hex-Integration) — experimental Intel Hex build and optional local text processing.
-- [Troubleshooting](Troubleshooting) — GPU, thermal, server and security checks.
+- [Getting Started](Getting-Started.md) — installation, backends and first generation.
+- [Hex Integration](Hex-Integration.md) — experimental Intel Hex build and optional local text processing.
+- [Troubleshooting](Troubleshooting.md) — GPU, thermal, server and security checks.
 - [Benchmarks](https://github.com/jirbis/mac-intel-local-ai/blob/main/docs/benchmarks.md) — measured results on a single reference Mac.
 - [Source and issues](https://github.com/jirbis/mac-intel-local-ai) — MIT-licensed application.
 

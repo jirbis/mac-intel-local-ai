@@ -16,4 +16,4 @@ Backends and models are not bundled. Follow the [backend installation guide](htt
 
 Default endpoints are loopback. A placeholder API key is not authentication. Do not expose unauthenticated servers to the LAN or internet; advanced extra arguments, environment variables and custom commands can override defaults. Do not enter secrets in launch parameters; settings and generated plists are local files, not a secret store.
 
-See [Troubleshooting](Troubleshooting) and [Hex Integration](Hex-Integration).
+See [Troubleshooting](Troubleshooting.md) and [Hex Integration](Hex-Integration.md).
