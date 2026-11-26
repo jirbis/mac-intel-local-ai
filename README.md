@@ -2,7 +2,7 @@
 
 A macOS menu bar app that runs a local LLM server on an **Intel Mac with an AMD Radeon GPU** and lets you switch between the ways of running one: Ollama builds with Vulkan, Ollama from Homebrew, llama.cpp with Vulkan or on the CPU, or any command of your own. Every option keeps its own parameters, and the window shows the exact command it will run.
 
-Apple dropped GPU acceleration for these Macs from the usual tools: Metal in llama.cpp and Ollama crashes or times out on Radeon GPUs once the whole model is on the GPU. Vulkan through MoltenVK works and is about 3x faster than the CPU. This app makes those Vulkan builds easy to run, compare and keep running.
+On the reference Intel Mac, full Metal offload in the tested builds hung or timed out. Vulkan through MoltenVK worked and delivered about 3x the CPU generation throughput for the tested 3B model. Other hardware and backend versions need separate verification. This app makes those Vulkan builds easy to run, compare and keep running.
 
 Developed and measured on a MacBook Pro 16" 2019 (i9-9880H, Radeon Pro 5500M 8 GB, macOS 15). The interface is in English by default; switch it to Russian under *Language / Язык* in the settings window.
 
@@ -30,6 +30,19 @@ Developed and measured on a MacBook Pro 16" 2019 (i9-9880H, Radeon Pro 5500M 8 G
 - **Other tools can find the server.** The app writes `~/Library/Application Support/Mac Intel Local AI/active.json`; see [`examples/active_server.py`](examples/active_server.py).
 - **Chat apps.** The window shows the OpenAI-compatible Base URL (`http://127.0.0.1:<port>/v1`), the model name and an API key (any value works) with copy buttons, for Jan, Open WebUI, Msty and similar apps. With a llama.cpp backend it also opens llama-server's built-in chat page.
 - **[Hex](https://github.com/jirbis/hex) integration.** Optional: it sets `HEX_LOCAL_AI_ENDPOINT` and `HEX_LOCAL_AI_MODEL` now and at every login.
+
+## Compatibility and release status
+
+The first [development pre-release](https://github.com/jirbis/mac-intel-local-ai/releases/tag/dev-45681423489) is available; it is not a stable or notarized release. The hosted Intel build and package integrity checks passed, while the exact downloadable app still needs a target-Mac smoke test. See [compatibility matrix and release verification](docs/compatibility.md) for tested scope and a reproducible acceptance checklist.
+
+## Documentation
+
+- [Getting started](docs/wiki/Getting-Started.md)
+- [Experimental Hex integration](docs/wiki/Hex-Integration.md) — reported working with the owner's Intel fork build, not stock upstream Hex.
+- [Troubleshooting](docs/wiki/Troubleshooting.md)
+- [Documentation home](docs/wiki/Home.md) (Wiki-ready pages).
+
+The server defaults to loopback; its placeholder API key is not authentication. Custom commands, extra environment variables and arguments can override defaults. Do not expose unauthenticated endpoints or put secrets in launch settings.
 
 ## Install
 

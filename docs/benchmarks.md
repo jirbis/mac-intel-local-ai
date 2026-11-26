@@ -39,3 +39,13 @@ Prompt 128, generation 128, batch/ubatch 128, 8 threads, flash attention off, me
 - **Throttling.** This laptop throttles hard. With `CPU_Speed_Limit` at 22–35, the GPU fell to 15–35 tok/s, and whichever server ran first "won". Only compare runs taken at 100.
 - **Flash attention.** It isn't supported by Vulkan through MoltenVK on this GPU. With `auto`, llama.cpp reports "Flash Attention not supported, set to disabled", and attention still runs on the GPU the regular way.
 - **One model at a time.** Each loaded 3B model holds about 2.2 GB of VRAM, so run only one server with a model loaded. The app enforces that by running every backend under one LaunchAgent.
+
+## Reproduction protocol and evidence limits (M1)
+
+The historical numbers above are the repository's measurements, not a new run on the downloadable release. Preserve them as reference data. For an independent comparison:
+
+1. Record exact app/backend commits or releases, OS, GPU and free VRAM, displays, model file SHA-256, quantization, context, GPU layers, device, threads, flash attention and sampling configuration. Use identical model weights and prompt where supported; distinguish server generation tok/s from llama-bench throughput.
+2. Stop only the previously managed backend before switching. Confirm one loaded model and full offload where intended, using backend logs or reported VRAM residency. CPU baseline explicitly uses no GPU layers.
+3. Record `pmset -g therm` and temperature/power conditions before and after each trial. Warm up consistently; alternate backend order to reduce thermal bias, then generate 200 tokens at temperature 0 with at least three runs per backend, two rounds if feasible. If EOS stops early, record actual token count; never label a short run as 200 tokens.
+4. Capture actual generated token count and generation duration from the API or backend timing output (not total request time); report median/range, prompt processing separately, any errors and thermal drops. Preserve raw timing evidence if available. Do not compare different context lengths or quantizations as equivalent.
+5. Keep failed/unknown cases in the record. Do not generalize results beyond the reference hardware/model. The hosted build runner cannot reproduce Radeon performance; no ASR or Apple Silicon inference claim.
