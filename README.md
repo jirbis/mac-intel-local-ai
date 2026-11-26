@@ -35,6 +35,15 @@ Developed and measured on a MacBook Pro 16" 2019 (i9-9880H, Radeon Pro 5500M 8 G
 
 The first [development pre-release](https://github.com/jirbis/mac-intel-local-ai/releases/tag/dev-45681423489) is available; it is not a stable or notarized release. The hosted Intel build and package integrity checks passed, while the exact downloadable app still needs a target-Mac smoke test. See [compatibility matrix and release verification](docs/compatibility.md) for tested scope and a reproducible acceptance checklist.
 
+## Documentation
+
+- [Getting started](docs/wiki/Getting-Started.md)
+- [Experimental Hex integration](docs/wiki/Hex-Integration.md) — reported working with the owner's Intel fork build, not stock upstream Hex.
+- [Troubleshooting](docs/wiki/Troubleshooting.md)
+- [Documentation home](docs/wiki/Home.md) (Wiki-ready pages).
+
+The server defaults to loopback; its placeholder API key is not authentication. Custom commands, extra environment variables and arguments can override defaults. Do not expose unauthenticated endpoints or put secrets in launch settings.
+
 ## Install
 
 You need the Command Line Tools (`xcode-select --install`). Xcode isn't needed.
