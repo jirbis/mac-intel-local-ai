@@ -1,6 +1,6 @@
 # Compatibility and release verification
 
-Status: development pre-release, not stable or notarized. Mac Intel Local AI is a standalone local inference server controller. It does not require any specific chat client, cloud service or other Jirbis product. The app does not bundle backend executables or models.
+Status: development pre-release, not stable or notarized. Mac Intel Local AI is a standalone local inference server controller. It does not require any specific chat client or cloud service. The app does not bundle backend executables or models.
 
 ## Compatibility matrix (2026-11-25)
 
